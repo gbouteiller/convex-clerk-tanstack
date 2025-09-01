@@ -1,6 +1,5 @@
 /// <reference types="vite/client" />
 
-import { ClerkProvider } from "@clerk/tanstack-react-start";
 import { createRootRouteWithContext, HeadContent, Link, Outlet, Scripts } from "@tanstack/react-router";
 import type { ConvexHttpClient } from "convex/browser";
 import type { ConvexReactClient } from "convex/react";
@@ -26,24 +25,22 @@ function RootComponent() {
 
 function RootDocument({ children }: PropsWithChildren) {
 	return (
-		<ClerkProvider>
-			<html lang="en">
-				<head>
-					<HeadContent />
-				</head>
-				<body>
-					<header className="p-2 border-b-1">
-						<Button variant="ghost">
-							<Link to="/">Home</Link>
-						</Button>
-						<Button variant="ghost">
-							<Link to="/admin">Admin</Link>
-						</Button>
-					</header>
-					<main className="p-10">{children}</main>
-					<Scripts />
-				</body>
-			</html>
-		</ClerkProvider>
+		<html lang="en">
+			<head>
+				<HeadContent />
+			</head>
+			<body>
+				<header className="p-2 border-b-1">
+					<Button variant="ghost">
+						<Link to="/">Home</Link>
+					</Button>
+					<Button variant="ghost">
+						<Link to="/admin">Admin</Link>
+					</Button>
+				</header>
+				<main className="p-10">{children}</main>
+				<Scripts />
+			</body>
+		</html>
 	);
 }
