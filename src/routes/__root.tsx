@@ -1,10 +1,9 @@
 /// <reference types="vite/client" />
 
-import { ClerkProvider, useAuth } from "@clerk/tanstack-react-start";
+import { ClerkProvider } from "@clerk/tanstack-react-start";
 import { createRootRouteWithContext, HeadContent, Link, Outlet, Scripts } from "@tanstack/react-router";
-import { ConvexHttpClient } from "convex/browser";
-import { ConvexReactClient } from "convex/react";
-import { ConvexProviderWithClerk } from "convex/react-clerk";
+import type { ConvexHttpClient } from "convex/browser";
+import type { ConvexReactClient } from "convex/react";
 import type { PropsWithChildren } from "react";
 import { Button } from "@/components/ui/button";
 import appCss from "@/styles/app.css?url";
@@ -26,8 +25,6 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: PropsWithChildren) {
-	const { convex } = Route.useRouteContext();
-
 	return (
 		<ClerkProvider>
 			<html lang="en">
@@ -35,17 +32,15 @@ function RootDocument({ children }: PropsWithChildren) {
 					<HeadContent />
 				</head>
 				<body>
-					<ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-						<header className="p-2 border-b-1">
-							<Button variant="ghost">
-								<Link to="/">Home</Link>
-							</Button>
-							<Button variant="ghost">
-								<Link to="/admin">Admin</Link>
-							</Button>
-						</header>
-						<main className="p-10">{children}</main>
-					</ConvexProviderWithClerk>
+					<header className="p-2 border-b-1">
+						<Button variant="ghost">
+							<Link to="/">Home</Link>
+						</Button>
+						<Button variant="ghost">
+							<Link to="/admin">Admin</Link>
+						</Button>
+					</header>
+					<main className="p-10">{children}</main>
 					<Scripts />
 				</body>
 			</html>
