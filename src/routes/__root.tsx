@@ -3,42 +3,44 @@
 import { createRootRouteWithContext, HeadContent, Link, Outlet, Scripts } from "@tanstack/react-router";
 import type { ConvexHttpClient } from "convex/browser";
 import type { ConvexReactClient } from "convex/react";
-import type { PropsWithChildren } from "react";
 import { Button } from "@/components/ui/button";
+import { ThemeProvider } from "@/lib/theme";
 import appCss from "@/styles/app.css?url";
+import "@fontsource/geist-sans";
 
+// ROUTE ***********************************************************************************************************************************
 export const Route = createRootRouteWithContext<{ convex: ConvexReactClient; convexServer: ConvexHttpClient }>()({
 	head: () => ({
-		meta: [{ charSet: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1" }, { title: "TanStack Start Starter" }],
-		links: [{ rel: "stylesheet", href: appCss }],
+		meta: [{ charSet: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1" }, { title: "tanstack-clerk" }],
+		links: [
+			{ rel: "stylesheet", href: appCss },
+			{ rel: "icon", href: "/convex.svg" },
+		],
 	}),
-	component: RootComponent,
+	component: RootLayout,
 });
 
-function RootComponent() {
-	return (
-		<RootDocument>
-			<Outlet />
-		</RootDocument>
-	);
-}
-
-function RootDocument({ children }: PropsWithChildren) {
+// ROOT ************************************************************************************************************************************
+function RootLayout() {
 	return (
 		<html lang="en">
 			<head>
 				<HeadContent />
 			</head>
 			<body>
-				<header className="p-2 border-b-1">
-					<Button variant="ghost">
-						<Link to="/">Home</Link>
-					</Button>
-					<Button variant="ghost">
-						<Link to="/admin">Admin</Link>
-					</Button>
-				</header>
-				<main className="p-10">{children}</main>
+				<ThemeProvider>
+					<header className="p-2 border-b-1">
+						<Button variant="ghost">
+							<Link to="/">Home</Link>
+						</Button>
+						<Button variant="ghost">
+							<Link to="/admin">Admin</Link>
+						</Button>
+					</header>
+					<main className="p-10">
+						<Outlet />
+					</main>
+				</ThemeProvider>
 				<Scripts />
 			</body>
 		</html>
