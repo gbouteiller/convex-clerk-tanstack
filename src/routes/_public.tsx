@@ -1,11 +1,13 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { ConvexProvider } from "convex/react";
 
+// ROUTE ***********************************************************************************************************************************
 export const Route = createFileRoute("/_public")({
-	component: RouteComponent,
+	component: PublicLayout,
 });
 
-function RouteComponent() {
+// ROOT ************************************************************************************************************************************
+function PublicLayout() {
 	const { convex } = Route.useRouteContext();
 
 	return (

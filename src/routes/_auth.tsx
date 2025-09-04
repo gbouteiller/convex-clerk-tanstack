@@ -2,11 +2,13 @@ import { ClerkProvider, useAuth } from "@clerk/tanstack-react-start";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 
+// ROUTE ***********************************************************************************************************************************
 export const Route = createFileRoute("/_auth")({
-	component: RouteComponent,
+	component: AuthLayout,
 });
 
-function RouteComponent() {
+// ROOT ************************************************************************************************************************************
+function AuthLayout() {
 	const { convex } = Route.useRouteContext();
 	return (
 		<ClerkProvider>

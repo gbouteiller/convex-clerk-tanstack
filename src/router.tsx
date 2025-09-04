@@ -12,34 +12,6 @@ export function createRouter() {
 		unsavedChangesWarning: false,
 	});
 	const convexServer = new ConvexHttpClient(CONVEX_URL);
-	// const convexQueryClient = new ConvexQueryClient(convex)
-
-	// const queryClient: QueryClient = new QueryClient({
-	//   defaultOptions: {
-	//     queries: {
-	//       queryKeyHashFn: convexQueryClient.hashFn(),
-	//       queryFn: convexQueryClient.queryFn(),
-	//     },
-	//   },
-	// })
-	// convexQueryClient.connect(queryClient)
-
-	// const router = routerWithQueryClient(
-	//   createTanStackRouter({
-	//     routeTree,
-	//     defaultPreload: 'intent',
-	//     defaultErrorComponent: DefaultCatchBoundary,
-	//     defaultNotFoundComponent: () => <NotFound />,
-	//     context: { queryClient, convexClient: convex, convexQueryClient },
-	//     scrollRestoration: true,
-	//     Wrap: ({ children }) => (
-	//       <ConvexProvider client={convexQueryClient.convexClient}>
-	//         {children}
-	//       </ConvexProvider>
-	//     ),
-	//   }),
-	//   queryClient,
-	// )
 
 	const router = createTanStackRouter({
 		routeTree,

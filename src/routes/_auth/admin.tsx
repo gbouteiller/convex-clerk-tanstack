@@ -4,12 +4,11 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { getWebRequest } from "@tanstack/react-start/server";
 import { api } from "convex/_generated/api";
-import { useQuery } from "convex/react";
-import { getFunctionName, makeFunctionReference } from "convex/server";
-import { convexToJson, jsonToConvex } from "convex/values";
-import { useMemo } from "react";
+import { usePreloadedQuery } from "convex/react";
 import { Button } from "@/components/ui/button";
+import { preloadQuery } from "@/lib/convex";
 
+// SERVER **********************************************************************************************************************************
 const authStateFn = createServerFn({ method: "GET" }).handler(async () => {
 	const auth = await getAuth(getWebRequest());
 	if (!auth.isAuthenticated) throw redirect({ to: "/signin" });
@@ -18,28 +17,20 @@ const authStateFn = createServerFn({ method: "GET" }).handler(async () => {
 	return { token };
 });
 
+// ROUTE ***********************************************************************************************************************************
 export const Route = createFileRoute("/_auth/admin")({
 	beforeLoad: async ({ context: { convexServer } }) => {
 		const { token } = await authStateFn();
 		convexServer.setAuth(token);
 	},
-	component: RouteComponent,
-	loader: async ({ context: { convexServer } }) => {
-		const value = await convexServer.query(api.auth.getUserEmail);
-		return {
-			_name: getFunctionName(api.auth.getUserEmail),
-			_argsJSON: convexToJson({}),
-			_valueJSON: convexToJson(value),
-		};
-	},
+	component: AdminPage,
+	loader: async ({ context: { convexServer } }) => await preloadQuery(convexServer, api.auth.getUserEmail),
 });
 
-function RouteComponent() {
+// ROOT ************************************************************************************************************************************
+function AdminPage() {
 	const preloaded = Route.useLoaderData();
-	const args = useMemo(() => jsonToConvex(preloaded._argsJSON), [preloaded._argsJSON]);
-	const preloadedResult = useMemo(() => jsonToConvex(preloaded._valueJSON), [preloaded._valueJSON]);
-	const result = useQuery(makeFunctionReference<"query">(preloaded._name), args);
-	const email = useMemo(() => (result === undefined ? preloadedResult : result), [result, preloadedResult]);
+	const email = usePreloadedQuery(preloaded);
 
 	return (
 		<div className="flex flex-col gap-2">
